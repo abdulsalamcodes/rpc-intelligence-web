@@ -68,7 +68,7 @@ export function AnalysisProgress({ jobId }: AnalysisProgressProps) {
                         </div>
                         <div className="text-right">
                             <span className="text-5xl font-black text-emerald-400 tracking-tighter">
-                                {job.progress}%
+                                {job.progress_percent}%
                             </span>
                             <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest mt-1">Overall Progress</p>
                         </div>
@@ -77,7 +77,7 @@ export function AnalysisProgress({ jobId }: AnalysisProgressProps) {
                     <div className="h-4 bg-white/10 rounded-full overflow-hidden p-0.5">
                         <div
                             className="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-400 rounded-full transition-all duration-1000 ease-out"
-                            style={{ width: `${job.progress}%` }}
+                            style={{ width: `${job.progress_percent}%` }}
                         />
                     </div>
                 </CardContent>

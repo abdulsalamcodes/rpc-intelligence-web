@@ -19,6 +19,9 @@ import {
     BarChart3,
     BrainCircuit,
     ShieldCheck,
+    Filter,
+    AlertCircle,
+    Loader2 as Spinner,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -42,7 +45,7 @@ export default function RFPDetailPage() {
         return (
             <div className="flex items-center justify-center min-h-[400px]">
                 <div className="flex flex-col items-center gap-4">
-                    <Loader2 className="w-10 h-10 text-emerald-500 animate-spin" />
+                    <Spinner className="w-10 h-10 text-emerald-500 animate-spin" />
                     <p className="text-zinc-500 font-bold uppercase tracking-widest text-xs">Loading Workspace...</p>
                 </div>
             </div>
@@ -76,7 +79,7 @@ export default function RFPDetailPage() {
                         <div className="space-y-1">
                             <div className="flex items-center gap-3">
                                 <h1 className="text-4xl font-black text-zinc-900 dark:text-white tracking-tight">
-                                    {rfp.title}
+                                    {rfp.filename}
                                 </h1>
                                 {getStatusDisplay(rfp.status)}
                             </div>
@@ -125,7 +128,7 @@ export default function RFPDetailPage() {
                                 size="xl"
                                 variant="default"
                                 className="rounded-2xl h-16 px-10 shadow-2xl hover:scale-[1.05] transition-transform"
-                                onClick={() => startAnalysis.mutate(id)}
+                                onClick={() => startAnalysis.mutate({ rfp_id: id })}
                                 loading={startAnalysis.isPending}
                             >
                                 <Zap className="w-5 h-5 mr-3 fill-white" />

@@ -141,6 +141,34 @@ export interface RFP {
     text_length: number;
     ocr_used: boolean;
     created_at: string;
+    // Optional fields for detailed view
+    summary?: string;
+    requirements?: Requirement[];
+    proposal_sections?: ProposalSection[];
+    review_results?: ReviewResults;
+}
+
+export interface ProposalSection {
+    title: string;
+    content: string;
+}
+
+export interface ReviewResults {
+    overall_score: number;
+    issues: ReviewIssue[];
+}
+
+export interface ReviewIssue {
+    title: string;
+    description: string;
+    severity: "Critical" | "Warning" | "Info";
+    recommendation: string;
+}
+
+export interface JobLog {
+    timestamp: string;
+    step?: string;
+    message: string;
 }
 
 export interface JobStatus {
@@ -154,7 +182,7 @@ export interface JobStatus {
     step_name: string;
     step_description: string;
     progress_percent: number;
-    logs: string[];
+    logs: JobLog[];
     error?: string;
     results_summary?: Record<string, unknown>;
 }

@@ -40,8 +40,8 @@ export default function RFPsPage() {
     const startAnalysis = useStartAnalysis();
 
     const filteredRFPs = rfps?.filter((rfp) =>
-        rfp.title.toLowerCase().includes(search.toLowerCase()) ||
-        rfp.client_name.toLowerCase().includes(search.toLowerCase())
+        rfp.filename.toLowerCase().includes(search.toLowerCase()) ||
+        (rfp.client_name?.toLowerCase().includes(search.toLowerCase()) ?? false)
     );
 
     const getStatusBadge = (status: string) => {
@@ -87,7 +87,7 @@ export default function RFPsPage() {
                         className="w-full h-12 pl-12 pr-4 rounded-xl bg-transparent border-none text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 outline-none"
                     />
                 </div>
-                <div className="w-[1px] h-8 bg-zinc-100 dark:bg-zinc-800 hidden sm:block" />
+                <div className="w-px h-8 bg-zinc-100 dark:bg-zinc-800 hidden sm:block" />
                 <Button variant="ghost" className="gap-2 font-bold text-zinc-600 dark:text-zinc-400">
                     <Filter className="w-4 h-4" />
                     Filter
@@ -116,9 +116,9 @@ export default function RFPsPage() {
                         >
                             <div className="flex items-start justify-between mb-6">
                                 <div className="space-y-1.5">
-                                    <Link href={`/rfps/${rfp.id}`}>
+                                    <Link href={`/rfps/${rfp.rfp_id}`}>
                                         <h3 className="text-xl font-black text-zinc-900 dark:text-white group-hover:text-emerald-500 transition-colors line-clamp-1 leading-none">
-                                            {rfp.title}
+                                            {rfp.filename}
                                         </h3>
                                     </Link>
                                     <p className="flex items-center gap-1.5 text-sm font-bold text-zinc-400 uppercase tracking-widest">
@@ -144,7 +144,7 @@ export default function RFPsPage() {
                                             Export Assets
                                         </DropdownMenuItem>
                                         <DropdownMenuItem
-                                            onClick={() => deleteRFP.mutate(rfp.id)}
+                                            onClick={() => deleteRFP.mutate(rfp.rfp_id)}
                                             className="rounded-xl px-3 py-2.5 font-bold text-red-500 hover:text-red-600 focus:bg-red-50 dark:focus:bg-red-900/20 cursor-pointer"
                                         >
                                             <Trash2 className="w-4 h-4 mr-3" />
@@ -160,7 +160,7 @@ export default function RFPsPage() {
                                     {getStatusBadge(rfp.status)}
                                 </div>
                                 <div className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-800">
-                                    <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1 text-zinc-400">Deadline</p>
+                                    <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1">Deadline</p>
                                     <p className="text-sm font-bold text-zinc-700 dark:text-zinc-200 flex items-center gap-1.5">
                                         <Calendar className="w-3.5 h-3.5 text-emerald-500" />
                                         {rfp.submission_deadline ? new Date(rfp.submission_deadline).toLocaleDateString() : "No date"}
@@ -177,17 +177,19 @@ export default function RFPsPage() {
                                     </div>
                                 </div>
                                 {rfp.status === "uploaded" || rfp.status === "failed" ? (
-                                    <Button
-                                        size="sm"
-                                        className="rounded-xl font-bold gap-2"
-                                        onClick={() => startAnalysis.mutate(rfp.id)}
-                                        loading={startAnalysis.isPending && startAnalysis.variables === rfp.id}
-                                    >
-                                        Analyze
-                                        <ChevronRight className="w-4 h-4" />
-                                    </Button>
+                                    <Link href={`/rfps/${rfp.rfp_id}`}>
+                                        <Button
+                                            size="sm"
+                                            className="rounded-xl font-bold gap-2"
+                                            onClick={() => startAnalysis.mutate({ rfp_id: rfp.rfp_id })}
+                                            loading={startAnalysis.isPending && (startAnalysis.variables as any)?.rfp_id === rfp.rfp_id}
+                                        >
+                                            Analyze
+                                            <ChevronRight className="w-4 h-4" />
+                                        </Button>
+                                    </Link>
                                 ) : (
-                                    <Link href={`/rfps/${rfp.id}`}>
+                                    <Link href={`/rfps/${rfp.rfp_id}`}>
                                         <Button variant="outline" size="sm" className="rounded-xl font-bold bg-transparent">
                                             Results
                                         </Button>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useAnalysisResults } from "@/lib/hooks";
+import { useResults } from "@/lib/hooks";
 import {
     CheckCircle2,
     AlertTriangle,
@@ -25,11 +25,11 @@ interface ComplianceMatrixProps {
 }
 
 export function ComplianceMatrix({ rfpId }: ComplianceMatrixProps) {
-    const { data: results, isLoading } = useAnalysisResults(rfpId);
+    const { data: results, isLoading } = useResults(rfpId);
     const [filter, setFilter] = useState<"all" | "high-risk" | "mandatory">("all");
     const [expandedId, setExpandedId] = useState<string | null>(null);
 
-    const complianceResult = results?.find((r) => r.agent_id === "ComplianceManager");
+    const complianceResult = (results as any[])?.find((r) => r.agent_id === "ComplianceManager");
     const requirements = complianceResult?.result?.requirements || [];
 
     const filteredRequirements = requirements.filter((req: any) => {
